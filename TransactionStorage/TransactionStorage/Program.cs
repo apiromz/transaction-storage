@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TransactionStorage
+namespace TransactionStorage.API
 {
     public class Program
     {

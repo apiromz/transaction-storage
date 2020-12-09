@@ -1,6 +1,6 @@
 using System;
 
-namespace TransactionStorage
+namespace TransactionStorage.API
 {
     public class WeatherForecast
     {
