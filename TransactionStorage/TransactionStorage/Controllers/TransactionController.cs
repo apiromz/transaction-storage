@@ -36,11 +36,16 @@ namespace TransactionStorage.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public IActionResult Upload(IFormFile file)
         {
             if (!validationService.IsContentTypeCorrect(file.ContentType))
             {
                 return Ok("Unknown format");
+            }
+
+            if (!validationService.IsFileSizeAllowed(file.Length))
+            {
+                return Ok("file size exceeds limit allowed (1MB)");
             }
 
             var result = transactionService.SaveTransaction(file);
@@ -50,7 +55,7 @@ namespace TransactionStorage.API.Controllers
                 return BadRequest(result.Message);
             }
 
-            return Ok();
+            return Ok("Your transactions has been upload successfully!");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using LINQtoCSV;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,13 +19,13 @@ namespace TransactionStorage.Service.File
             "text/xml"
         };
         private readonly ILogger<FileService> logger;
-
-
+        private readonly IOptions<AppSettings> setting;
         private const string ENCODING = "iso-8859-1";
 
-        public FileService(ILogger<FileService> logger)
+        public FileService(ILogger<FileService> logger, IOptions<AppSettings> setting)
         {
             this.logger = logger;
+            this.setting = setting;
         }
 
         public bool IsContentTypeCorrect(string contentType)
@@ -32,6 +33,11 @@ namespace TransactionStorage.Service.File
             var contentTypeLowerCase = contentType.ToLower();
 
             return acceptTypes.Any(type => type.ToLower().Equals(contentTypeLowerCase));
+        }
+
+        public bool IsFileSizeAllowed(long filesize)
+        {
+            return filesize < setting.Value.LimitFileUploadSize;
         }
 
         public List<TransactionModel> GetTransactions(IFormFile file)

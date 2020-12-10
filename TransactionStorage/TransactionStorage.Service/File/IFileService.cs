@@ -11,5 +11,6 @@ namespace TransactionStorage.Service.File
     {
         bool IsContentTypeCorrect(string contentType);
         List<TransactionModel> GetTransactions(IFormFile file);
+        bool IsFileSizeAllowed(long filesize);
     }
 }

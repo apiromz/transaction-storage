@@ -12,7 +12,7 @@ namespace TransactionStorage.Service.Models
         public string Id { get; set; }
 
         [CsvColumn(FieldIndex = 2, Name = "Amount")]
-        public double Amount { get; set; }
+        public string Amount { get; set; }
 
         [CsvColumn(FieldIndex = 3, Name = "Currency Code")]
         public string CurrencyCode { get; set; }
@@ -41,7 +41,7 @@ namespace TransactionStorage.Service.Models
     public class PaymentDetails
     {
         [XmlElement(ElementName = "Amount")]
-        public double Amount { get; set; }
+        public string Amount { get; set; }
 
         [XmlElement(ElementName = "CurrencyCode")]
         public string CurrencyCode { get; set; }

@@ -13,7 +13,7 @@ namespace TransactionStorage.Service.Validation
             var result = new ValidationResult();
 
             var idValidation = new Validation("transaction id", transaction.Id);
-            var amountValidation = new Validation("amount", transaction.Amount.ToString());
+            var amountValidation = new Validation("amount", transaction.Amount);
             var currencyValidation = new Validation("currencyCode", transaction.CurrencyCode);
             var dateValidation = new Validation("transaction date", transaction.Date);
             var statusValidation = new Validation("status", transaction.Status);
