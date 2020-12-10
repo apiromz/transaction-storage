@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TransactionStorage.Data.TransactionProvider;
 using TransactionStorage.Service.File;
 using TransactionStorage.Service.Models;
 using TransactionStorage.Service.Transaction;
@@ -29,11 +31,19 @@ namespace TransactionStorage.API
 
             services.Configure<AppSettings>(Configuration.GetSection("Settings"));
 
-            services.AddSingleton<IFileService, FileService>();
+            services.AddScoped<IFileService, FileService>();
 
-            services.AddSingleton<ITransactionService, TransactionService>();
+            services.AddScoped<ITransactionService, TransactionService>();
 
-            services.AddSingleton<IValidatorService, ValidatorService>();
+            services.AddScoped<IValidatorService, ValidatorService>();
+
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+            services.AddDbContext<TransactionContext>(options =>
+            {
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("default"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

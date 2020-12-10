@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TransactionStorage.Data.Models;
+using TransactionStorage.Data.TransactionProvider;
 using TransactionStorage.Service.File;
 using TransactionStorage.Service.Models;
 using TransactionStorage.Service.Validation;
@@ -13,12 +16,14 @@ namespace TransactionStorage.Service.Transaction
         private readonly AppSettings settings;
         private readonly IFileService fileService;
         private readonly IValidatorService validatorService;
+        private readonly ITransactionRepository transactionRepository;
 
-        public TransactionService(IOptions<AppSettings> settings, IFileService fileService, IValidatorService validatorService)
+        public TransactionService(IOptions<AppSettings> settings, IFileService fileService, IValidatorService validatorService, ITransactionRepository transactionRepository)
         {
             this.settings = settings.Value;
             this.fileService = fileService;
             this.validatorService = validatorService;
+            this.transactionRepository = transactionRepository;
         }
 
         public ValidationResult SaveTransaction(IFormFile file)
@@ -43,7 +48,67 @@ namespace TransactionStorage.Service.Transaction
                 return result;
             }
 
+            var dataToSave = BuildDataEntity(transactions);
+
+            transactionRepository.InsertTransaction(dataToSave);
+
             return result;
         }
+
+        public List<Transactions> BuildDataEntity(List<TransactionModel> transactions)
+        {
+            return transactions.Select(transaction => new Transactions {
+                Id = transaction.Id,
+                Amount = double.Parse(transaction.Amount),
+                Currency = transaction.CurrencyCode,
+                Date = transaction.IsXml ? DateTime.Parse(transaction.Date) : DateTime.ParseExact(transaction.Date, "dd/MM/yyyy hh:mm:ss", null),
+                Status = GetStatus(transaction.Status, transaction.IsXml),
+            }).ToList();
+        }
+
+        private string GetStatus(string status, bool isXml)
+        {
+            if (isXml)
+            {
+                var enumValue = (TransactionStatusXml) Enum.Parse(typeof(TransactionStatusXml), status);
+
+                switch (enumValue)
+                {
+                    case TransactionStatusXml.Approved:
+                        {
+                            return "A";
+                        }
+                    case TransactionStatusXml.Rejected:
+                        {
+                            return "R";
+                        }
+                    case TransactionStatusXml.Done:
+                        {
+                            return "D";
+                        }
+                }
+            }
+            else
+            {
+                var enumValue = (TransactionStatusCsv) Enum.Parse(typeof(TransactionStatusCsv), status);
+                switch (enumValue)
+                {
+                    case TransactionStatusCsv.Approved:
+                        {
+                            return "A";
+                        }
+                    case TransactionStatusCsv.Failed:
+                        {
+                            return "R";
+                        }
+                    case TransactionStatusCsv.Finished:
+                        {
+                            return "D";
+                        }
+                }
+            }
+
+            return "R";
+        } 
     }
 }
