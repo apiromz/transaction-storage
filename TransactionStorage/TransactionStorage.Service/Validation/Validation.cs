@@ -14,12 +14,13 @@ namespace TransactionStorage.Service.Validation
         private readonly string value;
         public readonly ValidationResult result;
 
+        private bool IsNullOrEmptyButRequired = false;
         private const string REGEX_PATTERN_WORD_ONLY = "\\w*";
 
         public Validation(string name, string value)
         {
             this.name = name;
-            this.value = value;
+            this.value = value ?? string.Empty;
             result = new ValidationResult();
         }
 
@@ -27,6 +28,7 @@ namespace TransactionStorage.Service.Validation
         {
             if (string.IsNullOrWhiteSpace(value))
             {
+                IsNullOrEmptyButRequired = true;
                 result.Message.Add($"{name} is required");
             }
 
@@ -99,7 +101,7 @@ namespace TransactionStorage.Service.Validation
 
         public Validation IsDateFormatXml()
         {
-            if (!DateTime.TryParseExact(value, "yyyy-MM-ddThh:mm:ss", null, DateTimeStyles.None, out _))
+            if (!DateTime.TryParseExact(value, "yyyy-MM-ddTHH:mm:ss", null, DateTimeStyles.None, out _))
             {
                 result.Message.Add($"{name} is invalid");
             }
@@ -137,6 +139,13 @@ namespace TransactionStorage.Service.Validation
 
         public bool Validate()
         {
+            if (IsNullOrEmptyButRequired)
+            {
+                // remove all validation msg to keep only one msg for required validation
+                result.Message = new List<string>();
+                Required();
+            }
+
             return !result.Message.Any();
         }
     }

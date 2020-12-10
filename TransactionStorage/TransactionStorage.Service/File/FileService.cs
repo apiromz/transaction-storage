@@ -88,10 +88,12 @@ namespace TransactionStorage.Service.File
                         ElementName = "Transactions"
                     };
                     
-                    var reader = new XmlSerializer(typeof(List<TransactionModel>), xRoot);
+                    var reader = new XmlSerializer(typeof(TransactionModels), xRoot);
                     var streamReader = new StreamReader(stream);
-                    transactions =  (List<TransactionModel>) reader.Deserialize(streamReader);
-                    transactions.ForEach(transaction => {
+                    var model =  (TransactionModels) reader.Deserialize(streamReader);
+                    transactions = model.Transaction;
+                    transactions.ForEach(transaction =>
+                    {
                         transaction.Amount = transaction.PaymentDetails.Amount;
                         transaction.CurrencyCode = transaction.PaymentDetails.CurrencyCode;
                         transaction.IsXml = true;

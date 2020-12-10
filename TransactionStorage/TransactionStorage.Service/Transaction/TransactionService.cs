@@ -21,18 +21,29 @@ namespace TransactionStorage.Service.Transaction
             this.validatorService = validatorService;
         }
 
-        public bool SaveTransaction(IFormFile file)
+        public ValidationResult SaveTransaction(IFormFile file)
         {
             var transactions = fileService.GetTransactions(file);
 
             var validationResults = new List<ValidationResult>();
             for (var index = 0; index < transactions.Count; index++)
             {
-                var result = validatorService.Validate(transactions[0], index + 1);
-                validationResults.Add(result);
+                var validationResult = validatorService.Validate(transactions[index], index + 1);
+                validationResults.Add(validationResult);
             }
 
-            return true;
+            var result = new ValidationResult
+            {
+                Message = validationResults.SelectMany(v => v.Message).ToList()
+            };
+            result.IsValid = !result.Message.Any();
+
+            if (!result.IsValid)
+            {
+                return result;
+            }
+
+            return result;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using LINQtoCSV;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace TransactionStorage.Service.Models
 {
+    [XmlRoot]
     public class TransactionModel
     {
         [CsvColumn(FieldIndex = 1, Name = "Transaction Identificator")]
@@ -28,6 +30,12 @@ namespace TransactionStorage.Service.Models
 
         [XmlIgnore]
         public bool IsXml { get; set; }
+    }
+
+    public class TransactionModels
+    {
+        [XmlElement(ElementName = "Transaction")]
+        public List<TransactionModel> Transaction { get; set; }
     }
 
     public class PaymentDetails

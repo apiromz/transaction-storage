@@ -40,10 +40,15 @@ namespace TransactionStorage.API.Controllers
         {
             if (!validationService.IsContentTypeCorrect(file.ContentType))
             {
-                return BadRequest("file format not supported");
+                return Ok("Unknown format");
             }
 
-            transactionService.SaveTransaction(file);
+            var result = transactionService.SaveTransaction(file);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Message);
+            }
 
             return Ok();
         }
