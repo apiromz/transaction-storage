@@ -8,5 +8,6 @@ namespace TransactionStorage.Data.TransactionProvider
     public interface ITransactionRepository
     {
         void InsertTransaction(List<Transactions> transactions);
+        List<Transactions> GetTransactions(TransactionCriteria criteria);
     }
 }

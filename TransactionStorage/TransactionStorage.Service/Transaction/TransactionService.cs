@@ -55,12 +55,32 @@ namespace TransactionStorage.Service.Transaction
             return result;
         }
 
+        public List<RetrieveTransaction> GetTransactions(Service.Models.TransactionCriteria criteria)
+        {
+            var result = new List<RetrieveTransaction>();
+
+            var transactions = transactionRepository.GetTransactions(new Data.Models.TransactionCriteria { 
+                Currency = criteria.Currency, 
+                Status = criteria.Status, 
+                StartDate = criteria.StartDate, 
+                EndDate = criteria.EndDate });
+
+            result = transactions.Select(t => new RetrieveTransaction
+            {
+                Id = t.Id,
+                Payment = $"{t.Amount} {t.Currency}",
+                Status = t.Status,
+            }).ToList();
+
+            return result;
+        }
+
         public List<Transactions> BuildDataEntity(List<TransactionModel> transactions)
         {
             return transactions.Select(transaction => new Transactions {
                 Id = transaction.Id,
                 Amount = double.Parse(transaction.Amount),
-                Currency = transaction.CurrencyCode,
+                Currency = transaction.CurrencyCode.ToUpper(),
                 Date = transaction.IsXml ? DateTime.Parse(transaction.Date) : DateTime.ParseExact(transaction.Date, "dd/MM/yyyy hh:mm:ss", null),
                 Status = GetStatus(transaction.Status, transaction.IsXml),
             }).ToList();

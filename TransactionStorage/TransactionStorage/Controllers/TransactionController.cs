@@ -19,23 +19,21 @@ namespace TransactionStorage.API.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ILogger<TransactionController> _logger;
-        private readonly IOptions<AppSettings> settings;
         private readonly IFileService validationService;
         private readonly ITransactionService transactionService;
 
         public TransactionController(
             ILogger<TransactionController> logger, 
-            IOptions<AppSettings> settings,
             IFileService validationService,
             ITransactionService transactionService)
         {
             _logger = logger;
-            this.settings = settings;
             this.validationService = validationService;
             this.transactionService = transactionService;
         }
 
         [HttpPost]
+        [Route("Upload")]
         public IActionResult Upload(IFormFile file)
         {
             if (!validationService.IsContentTypeCorrect(file.ContentType))
@@ -56,6 +54,21 @@ namespace TransactionStorage.API.Controllers
             }
 
             return Ok("Your transactions has been upload successfully!");
+        }
+
+        [HttpPost]
+        [Route("GetTransactions")]
+        public IActionResult GetTransactions(GetTransactionsRequest request)
+        {
+            var result = transactionService.GetTransactions(new TransactionCriteria
+            {
+                Currency = request.Currency,
+                Status = request.Status,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+            });
+
+            return Ok(result);
         }
     }
 }
