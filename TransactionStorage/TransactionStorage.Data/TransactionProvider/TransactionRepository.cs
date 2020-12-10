@@ -44,20 +44,5 @@ namespace TransactionStorage.Data.TransactionProvider
 
             return result;
         }
-
-        private bool IsMatchCriteria(TransactionCriteria criteria, Transactions transaction)
-        {
-            var currency = string.IsNullOrWhiteSpace(criteria.Currency) || criteria.Currency == transaction.Currency;
-            var status = string.IsNullOrWhiteSpace(criteria.Status) || criteria.Status == transaction.Status;
-            //var date = criteria.StartDate == null && criteria.EndDate == null || IsDatetimeInRange(criteria.StartDate, criteria.EndDate, transaction.Date);
-            var date = true;
-
-            return currency && status && date;
-        }
-
-        private bool IsDatetimeInRange(DateTime start, DateTime end, DateTime dateTime)
-        {
-            return dateTime >= start && dateTime <= end;
-        }
     }
 }
