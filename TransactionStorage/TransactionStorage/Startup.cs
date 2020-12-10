@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TransactionStorage.Service.File;
+using TransactionStorage.Service.Models;
+using TransactionStorage.Service.Transaction;
+using TransactionStorage.Service.Validation;
 
 namespace TransactionStorage.API
 {
@@ -29,6 +26,14 @@ namespace TransactionStorage.API
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
+
+            services.Configure<AppSettings>(Configuration.GetSection("Settings"));
+
+            services.AddSingleton<IFileService, FileService>();
+
+            services.AddSingleton<ITransactionService, TransactionService>();
+
+            services.AddSingleton<IValidatorService, ValidatorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

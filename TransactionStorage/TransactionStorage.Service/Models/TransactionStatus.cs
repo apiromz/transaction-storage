@@ -4,10 +4,17 @@ using System.Text;
 
 namespace TransactionStorage.Service.Models
 {
-    public enum TransactionStatus
+    public enum TransactionStatusCsv
     {
         Approved,
         Failed,
         Finished
+    }
+
+    public enum TransactionStatusXml
+    {
+        Approved,
+        Rejected,
+        Done
     }
 }

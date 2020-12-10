@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionStorage.API", "TransactionStorage\TransactionStorage.API.csproj", "{F7533C63-CA46-45FC-B334-8C538B3EE907}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionStorage.Service", "TransactionStorage.Service\TransactionStorage.Service.csproj", "{0446E032-EC61-4E2F-A0FC-EA018CAF7C67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionStorage.Data", "TransactionStorage.Data\TransactionStorage.Data.csproj", "{8FBC8672-E201-41DB-8286-F45C3B3B0500}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{F7533C63-CA46-45FC-B334-8C538B3EE907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7533C63-CA46-45FC-B334-8C538B3EE907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7533C63-CA46-45FC-B334-8C538B3EE907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0446E032-EC61-4E2F-A0FC-EA018CAF7C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0446E032-EC61-4E2F-A0FC-EA018CAF7C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0446E032-EC61-4E2F-A0FC-EA018CAF7C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0446E032-EC61-4E2F-A0FC-EA018CAF7C67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBC8672-E201-41DB-8286-F45C3B3B0500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBC8672-E201-41DB-8286-F45C3B3B0500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBC8672-E201-41DB-8286-F45C3B3B0500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBC8672-E201-41DB-8286-F45C3B3B0500}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -94,6 +94,7 @@ namespace TransactionStorage.Service.File
                     transactions.ForEach(transaction => {
                         transaction.Amount = transaction.PaymentDetails.Amount;
                         transaction.CurrencyCode = transaction.PaymentDetails.CurrencyCode;
+                        transaction.IsXml = true;
                     });
                 }
             }
