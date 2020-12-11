@@ -37,7 +37,7 @@ namespace TransactionStorage.Service.File
 
         public bool IsFileSizeAllowed(long filesize)
         {
-            return filesize < setting.Value.LimitFileUploadSize;
+            return filesize <= setting.Value.LimitFileUploadSize;
         }
 
         public List<TransactionModel> GetTransactions(IFormFile file)

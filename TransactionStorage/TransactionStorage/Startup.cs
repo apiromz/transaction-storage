@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TransactionStorage.API.Middlewares;
 using TransactionStorage.Data.TransactionProvider;
 using TransactionStorage.Service.File;
 using TransactionStorage.Service.Models;
@@ -66,6 +67,9 @@ namespace TransactionStorage.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
+
+            // global error handler
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseRouting();
 
